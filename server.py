@@ -6,7 +6,7 @@ import os
 app = Flask(__name__)
 CORS(app)
 
-API_KEY = "AIzaSyBlqNgRSeCnzmNQ6VU5M6pENUvSmynBzOs"
+API_KEY = os.getenv('GENERATIVE_API_KEY', 'default-key-if-missing')
 
 @app.route('/remix', methods=['POST', 'OPTIONS'])
 def remix():
@@ -46,7 +46,3 @@ def remix():
         import traceback
         traceback.print_exc()
         return jsonify({'error': str(e)}), 500
-
-if __name__ == '__main__':
-    print("Starting server on http://localhost:5000")
-    app.run(debug=True, port=5000, host='0.0.0.0')
