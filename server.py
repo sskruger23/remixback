@@ -8,7 +8,7 @@ CORS(app)
 
 API_KEY = os.getenv('GENERATIVE_API_KEY', 'default-key-if-missing')
 
-@app.route('/remix', methods=['POST', 'OPTIONS'])
+@app.route('/remixback', methods=['POST', 'OPTIONS'])
 def remix():
     if request.method == 'OPTIONS':
         return '', 200
