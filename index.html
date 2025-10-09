@@ -143,16 +143,10 @@
                     }, 2000);
                 });
             }
-
-            function showPaywall() {
-                document.getElementById('paywall').classList.remove('hidden');
-                if (typeof paypal !== 'undefined' && !paypalButton) {
-                    paypalButton = paypal.Buttons({
-                        style: { shape: 'pill', color: 'silver', layout: 'vertical', label: 'subscribe' },
-                        createSubscription: function(data, actions) {
-                            console.log('Attempting subscription with plan_id:', 'P-9H3223433Y203091RNDQKUSI');
-                            return actions.subscription.create({ plan_id: 'P-9H3223433Y203091RNDQKUSI' });
-                        },
+function showPaywall() {
+    document.getElementById('paywall').classList.remove('hidden');
+    console.log('PayPal disabled for testing'); // Replace the paypal.Buttons block
+},
                         onApprove: function(data, actions) {
                             console.log('Subscription approved with ID:', data.subscriptionID);
                             localStorage.setItem('isPaid', 'true');
