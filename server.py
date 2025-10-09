@@ -4,7 +4,7 @@ import requests
 import os
 
 app = Flask(__name__)
-CORS(app, resources={r"/remixback": {"origins": "verdant-pie-836149.netlify.app"}})
+CORS(app, resources={r"/remixback": {"origins": "remixback.vercel.app"}})
 
 API_KEY = os.getenv('GENERATIVE_API_KEY')
 if not API_KEY:
