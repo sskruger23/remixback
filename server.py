@@ -4,9 +4,11 @@ import requests
 import os
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/remixback": {"origins": "https://nextlogicai.com"}})
 
-API_KEY = os.getenv('GENERATIVE_API_KEY', 'default-key-if-missing')
+API_KEY = os.getenv('GENERATIVE_API_KEY')
+if not API_KEY:
+    raise ValueError("GENERATIVE_API_KEY not set")
 
 @app.route('/remixback', methods=['POST', 'OPTIONS'])
 def remix():
@@ -19,8 +21,7 @@ def remix():
         
         print(f"Received: {prompt[:50]}...")
         
-        # Use gemini-2.5-flash (fast and free)
-        url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={API_KEY}"
+        url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={API_KEY}"
         
         payload = {
             "contents": [{
@@ -34,7 +35,10 @@ def remix():
         
         if response.status_code == 200:
             result = response.json()
-            output = result['candidates'][0]['content']['parts'][0]['text']
+            if 'candidates' in result and result['candidates']:
+                output = result['candidates'][0].get('content', {}).get('parts', [{}])[0].get('text', 'No output')
+            else:
+                output = 'No valid response from API'
             print(f"Success! Generated {len(output)} characters")
             return jsonify({'output': output})
         else:
@@ -46,3 +50,6 @@ def remix():
         import traceback
         traceback.print_exc()
         return jsonify({'error': str(e)}), 500
+
+if __name__ == '__main__':
+    app.run(debug=True)
