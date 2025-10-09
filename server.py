@@ -21,7 +21,7 @@ def remix():
         
         print(f"Received: {prompt[:50]}...")
         
-        url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={API_KEY}"
+        url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={API_KEY}"  # Updated model
         
         payload = {
             "contents": [{
@@ -30,7 +30,6 @@ def remix():
         }
         
         response = requests.post(url, json=payload)
-        
         print(f"Status: {response.status_code}")
         
         if response.status_code == 200:
@@ -43,7 +42,7 @@ def remix():
             return jsonify({'output': output})
         else:
             print(f"Error: {response.text}")
-            return jsonify({'error': response.text}), 500
+            return jsonify({'error': response.text}), response.status_code
         
     except Exception as e:
         print(f"ERROR: {str(e)}")
