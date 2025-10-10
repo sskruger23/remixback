@@ -5,8 +5,7 @@ import os
 import traceback
 
 app = Flask(__name__)
-CORS(app, resources={r"/remixback": {"origins": "https://remixback-git-main-sarahs-projects-d812bb6b.vercel.app"}})  # Use * for testing, restrict in prod
-
+CORS(app, resources={r"/remixback": {"origins": "https://remixback-git-main-sarahs-projects-d812bb6b.vercel.app", "https://remixback.vercel.app/", "https://www.nextlogicai.com", "https://nextlogicai.com"}})  
 API_KEY = os.getenv('GENERATIVE_API_KEY')
 if not API_KEY:
     raise ValueError("GENERATIVE_API_KEY not set")
