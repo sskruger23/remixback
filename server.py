@@ -7,7 +7,7 @@ import traceback
 app = Flask(__name__)
 CORS(app, resources={r"/remixback": {"origins": [
     "https://remixback-git-main-sarahs-projects-d812bb6b.vercel.app",
-    "https://remixback.vercel.app/",
+    "https://remixback.vercel.app",
     "https://www.nextlogicai.com",
     "https://nextlogicai.com"
 ]}})
