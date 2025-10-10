@@ -5,7 +5,13 @@ import os
 import traceback
 
 app = Flask(__name__)
-CORS(app, resources={r"/remixback": {"origins": "https://remixback-git-main-sarahs-projects-d812bb6b.vercel.app", "https://remixback.vercel.app/", "https://www.nextlogicai.com", "https://nextlogicai.com"}})  
+CORS(app, resources={r"/remixback": {"origins": [
+    "https://remixback-git-main-sarahs-projects-d812bb6b.vercel.app",
+    "https://remixback.vercel.app/",
+    "https://www.nextlogicai.com",
+    "https://nextlogicai.com"
+]}})
+
 API_KEY = os.getenv('GENERATIVE_API_KEY')
 if not API_KEY:
     raise ValueError("GENERATIVE_API_KEY not set")
@@ -40,8 +46,6 @@ def remix():
                 output = 'No valid response from API'
             print(f"Success! Generated {len(output)} characters")
             return jsonify({'output': output})
-        elif response.status_code == 429:
-            return jsonify({'error': 'API quota exceeded. Please try again later.'}), 429
         else:
             try:
                 error_data = response.json()
