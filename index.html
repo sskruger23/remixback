@@ -187,8 +187,8 @@
                 paypalButton = paypal.Buttons({
                     style: { shape: 'pill', color: 'silver', layout: 'vertical', label: 'subscribe' },
                     createSubscription: function(data, actions) {
-                        console.log('Creating subscription with plan_id: P-9AN67037B58421011NDUDF2Y');
-                        return actions.subscription.create({ plan_id: 'P-9AN67037B58421011NDUDF2Y' }); // Update with valid sandbox plan ID
+                        console.log('Creating subscription with plan_id:P-5LK680852J287884DNDUFRKA');
+                        return actions.subscription.create({ plan_id: 'P-5LK680852J287884DNDUFRKA' }); // Update with valid sandbox plan ID
                     },
                     onApprove: function(data, actions) {
                         console.log('Subscription approved with ID:', data.subscriptionID);
@@ -206,7 +206,7 @@
                     onCancel: function(data) {
                         console.log('Subscription canceled:', data);
                     }
-                }).render('#paypal-button-container-P-9AN67037B58421011NDUDF2Y');
+                }).render('#paypal-button-container-P-5LK680852J287884DNDUFRKA');
                 console.log('PayPal button rendered');
             } else if (typeof paypal === 'undefined') {
                 console.error('PayPal SDK not loaded');
