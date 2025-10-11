@@ -1,37 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+
+<html>
 <head>
-<meta charset="UTF-8">
-<title>Cookie Editor</title>
-<style>
-body { font-family: sans-serif; background:#111; color:#eee; text-align:center; padding:20px; }
-input, textarea, button { margin:6px; padding:8px; border-radius:6px; border:none; }
-textarea { width:90%; height:100px; background:#222; color:#fff; }
-button { background:#4CAF50; color:white; cursor:pointer; }
-button:hover { background:#45a049; }
-</style>
+  <meta http-equiv="CONTENT-TYPE" content="text/html; charset=UTF-8">
+  <title>Hello, World!</title>
 </head>
 <body>
-<h2>Cookie Editor (Offline)</h2>
-<button onclick="showCookies()">Show Cookies</button>
-<button onclick="clearCookies()">Delete All</button>
-<br>
-<textarea id="cookieBox" placeholder="name=value; path=/; expires=..."></textarea><br>
-<button onclick="setCookie()">Set Cookie</button>
-
-<script>
-function showCookies(){document.getElementById('cookieBox').value=document.cookie||'No cookies found';}
-function setCookie(){
-  let c=document.getElementById('cookieBox').value;
-  if(!c)return alert('Enter a cookie string first');
-  try{document.cookie=c;alert('Cookie set!');}catch(e){alert('Error: '+e);}
-}
-function clearCookies(){
-  document.cookie.split(';').forEach(c=>{
-    document.cookie=c.split('=')[0]+'=;expires='+new Date(0).toUTCString()+';path=/';
-  });
-  alert('All cookies cleared.');
-}
-</script>
+  <h1>
+    Hello, World!
+  </h1>
 </body>
 </html>
