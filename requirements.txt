@@ -1,5 +1,9 @@
 flask
-gunicorn
 flask-cors
-openai
+flask-session
+flask-limiter
+bcrypt
+python-dotenv
+flask-hcaptcha
 requests
+psycopg2-binary

@@ -13,6 +13,8 @@
     <meta name="twitter:image" content="https://res.cloudinary.com/dvovudqsd/image/upload/v1760056331/og-logo.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://www.paypal.com/sdk/js?client-id=AZGW3y8tnDTpa4IQZWmD_W73F6nx-8fpjl-WJDR2U4mGtVxrDGOvJhZZCngG-yIMUPUsLXpozO3F-OuB&vault=true&intent=subscription" data-sdk-integration-source="button-factory"></script>
+    <script src="https://js.hcaptcha.com/1/api.js" async defer></script>
+    <script src="/static/script.js" defer></script>
 </head>
 <body class="bg-gradient-to-br from-purple-600 via-pink-500 to-orange-400 min-h-screen text-white">
     <div class="container mx-auto px-4 py-8 max-w-6xl">
@@ -20,14 +22,16 @@
         <div class="text-center mb-12">
             <img src="https://res.cloudinary.com/dvovudqsd/image/upload/v1760056331/og-logo.png" alt="NextLogicAI Logo" class="mx-auto h-36 w-auto mb-4" onerror="this.src='https://via.placeholder.com/150';">
             <p class="text-xl font-medium">Transform your content with AI-powered rewriting</p>
-            <div class="mt-4 inline-block bg-white/20 backdrop-blur-sm rounded-full px-6 py-2">
-                <p class="font-semibold" id="uses-counter">3 free remixes left</p>
+            <div class="mt-4 flex justify-center items-center">
+                <p class="font-semibold bg-white/20 backdrop-blur-sm rounded-full px-6 py-2" id="uses-counter">3 free remixes left</p>
+                <button id="login-btn" class="ml-4 bg-white/20 backdrop-blur-sm rounded-full px-6 py-2 font-semibold">Log In</button>
+                <button id="logout-btn" class="ml-4 bg-white/20 backdrop-blur-sm rounded-full px-6 py-2 font-semibold hidden">Log Out</button>
             </div>
         </div>
 
         <!-- Welcome Section -->
         <section class="mb-8 bg-white/10 backdrop-blur-sm rounded-2xl p-6 text-white">
-            <p class="text-lg">Welcome to NextLogicAI, the ultimate free AI content rewriter designed for creators and professionals. Whether you're crafting a blog post, a Twitter thread, or a professional email, our advanced AI transforms your ideas into polished, engaging content in seconds. Stop Staring at a Blank Screen. Start Publishing.</p>
+            <p class="text-lg">Welcome to NextLogicAI, the ultimate best, free to try,<b> AI content rewriter </b> designed for creators and professionals. Whether you're crafting a blog post, a Twitter thread, or a professional email, our advanced AI transforms your ideas into polished, engaging content in seconds. Stop Staring at a Blank Screen. Start Publishing.</p>
             <p class="mt-4 text-md">Get started with 3 <b>FREE</b> remixes! Turn a rough draft into an SEO-friendly article or a simple thought into a viral social post. Unlock unlimited power for just $4.99/month and save countless hours.</p>
         </section>
 
@@ -41,51 +45,23 @@
                     
                     <div class="mt-6">
                         <label class="block text-sm font-bold text-gray-700 mb-3">Transform it into:</label>
-                        <div class="space-y-2">
-                            <button onclick="selectType('tweet')" id="btn-tweet" class="w-full p-3 rounded-xl text-left transition-all bg-purple-600 text-white shadow-lg">
-                                <div class="font-semibold">Twitter Thread</div>
-                                <div class="text-sm opacity-90">Punchy, engaging tweets</div>
-                            </button>
-                            <button onclick="selectType('email')" id="btn-email" class="w-full p-3 rounded-xl text-left transition-all bg-white text-gray-700 hover:bg-gray-100">
-                                <div class="font-semibold">📨 Professional Email</div>
-                                <div class="text-sm text-gray-500">Clear, polished tone</div>
-                            </button>
-                            <button onclick="selectType('ad')" id="btn-ad" class="w-full p-3 rounded-xl text-left transition-all bg-white text-gray-700 hover:bg-gray-100">
-                                <div class="font-semibold">📣 Ad Copy</div>
-                                <div class="text-sm text-gray-500">Persuasive and catchy</div>
-                            </button>
-                            <button onclick="selectType('linkedin')" id="btn-linkedin" class="w-full p-3 rounded-xl text-left transition-all bg-white text-gray-700 hover:bg-gray-100">
-                                <div class="font-semibold">💼 LinkedIn Post</div>
-                                <div class="text-sm text-gray-500">Professional insights</div>
-                            </button>
-                            <button onclick="selectType('blog')" id="btn-blog" class="w-full p-3 rounded-xl text-left transition-all bg-white text-gray-700 hover:bg-gray-100">
-                                <div class="font-semibold">📝 Blog Post</div>
-                                <div class="text-sm text-gray-500">SEO-friendly article</div>
-                            </button>
-                            <button onclick="selectType('instagram')" id="btn-instagram" class="w-full p-3 rounded-xl text-left transition-all bg-white text-gray-700 hover:bg-gray-100">
-                                <div class="font-semibold">📸 Instagram Caption</div>
-                                <div class="text-sm text-gray-500">Engaging with hashtags</div>
-                            </button>
-                            <button onclick="selectType('youtube')" id="btn-youtube" class="w-full p-3 rounded-xl text-left transition-all bg-white text-gray-700 hover:bg-gray-100">
-                                <div class="font-semibold">🎥 YouTube Description</div>
-                                <div class="text-sm text-gray-500">Optimized with timestamps</div>
-                            </button>
-                            <button onclick="selectType('press')" id="btn-press" class="w-full p-3 rounded-xl text-left transition-all bg-white text-gray-700 hover:bg-gray-100">
-                                <div class="font-semibold">📰 Press Release</div>
-                                <div class="text-sm text-gray-500">Professional announcement</div>
-                            </button>
-                            <button onclick="selectType('story')" id="btn-story" class="w-full p-3 rounded-xl text-left transition-all bg-white text-gray-700 hover:bg-gray-100">
-                                <div class="font-semibold">📖 Story/Narrative</div>
-                                <div class="text-sm text-gray-500">Engaging storytelling</div>
-                            </button>
-                            <button onclick="selectType('casual')" id="btn-casual" class="w-full p-3 rounded-xl text-left transition-all bg-white text-gray-700 hover:bg-gray-100">
-                                <div class="font-semibold">😎 Casual Friendly</div>
-                                <div class="text-sm text-gray-500">Relaxed and fun</div>
-                            </button>
-                        </div>
+                        <select id="remix-type" class="w-full p-3 rounded-xl bg-white border-2 border-gray-300 focus:border-purple-500 focus:outline-none text-gray-700 shadow-lg hover:shadow-xl transition-shadow">
+                            <option value="tweet" selected>Twitter Thread - Punchy, engaging tweets</option>
+                            <option value="email">📨 Professional Email - Clear, polished tone</option>
+                            <option value="ad">📣 Ad Copy - Persuasive and catchy</option>
+                            <option value="linkedin">💼 LinkedIn Post - Professional insights</option>
+                            <option value="blog">📝 Blog Post - SEO-friendly article</option>
+                            <option value="instagram">📸 Instagram Caption - Engaging with hashtags</option>
+                            <option value="youtube">🎥 YouTube Description - Optimized with timestamps</option>
+                            <option value="press">📰 Press Release - Professional announcement</option>
+                            <option value="story">📖 Story/Narrative - Engaging storytelling</option>
+                            <option value="casual">😎 Casual Friendly - Relaxed and fun</option>
+                        </select>
                     </div>
 
-                    <button onclick="doRemix()" id="remix-btn" class="w-full mt-6 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold py-4 rounded-xl hover:from-purple-700 hover:to-pink-700 transition-all shadow-xl">
+                    <p class="text-red-600 text-sm mt-4">Warning: It can take up to 2 minutes to render the full message.</p>
+
+                    <button id="remix-btn" class="w-full mt-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold py-4 rounded-xl hover:from-purple-700 hover:to-pink-700 transition-all shadow-xl">
                         Remix It Now
                     </button>
                 </div>
@@ -97,14 +73,30 @@
                         Your remixed content will appear here...
                     </div>
 
-                    <button onclick="doCopy()" id="copy-btn" class="w-full mt-4 bg-green-500 text-white font-bold py-3 rounded-xl hover:bg-green-600 transition-all hidden">
+                    <button id="copy-btn" class="w-full mt-4 bg-green-500 text-white font-bold py-3 rounded-xl hover:bg-green-600 transition-all hidden">
                         Copy to Clipboard
                     </button>
                     <div class="mt-8 space-y-3">
                         <p class="text-gray-600 text-md">Our AI content rewriter is perfect for busy marketers, writers, and content creators. From crafting persuasive ad copy to generating LinkedIn posts that boost your professional network, NextLogicAI adapts to your needs.</p>
-                        <p class="mt-4 text-gray-600 text-md">Start with our free tier to see the magic happen. With each remix, you’ll save time while producing high-quality content tailored to any platform—try it today!</p>
-                    </div>
                 </div>
+                        <p class="mt-4 text-gray-600 text-md">Start with our <b>free tier</b> to see the magic happen. With each remix, you’ll save time while producing high-quality content tailored to any platform—<b>try it today!</b></p>
+                    </div>
+            </div>
+        </div>
+
+        <!-- Login Modal -->
+        <div id="login-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
+            <div class="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl">
+                <h2 class="text-3xl font-black mb-4 text-gray-800">Log In</h2>
+                <form id="login-form" class="space-y-4">
+                    <input type="text" name="username" placeholder="Username" required class="w-full p-3 border-2 border-gray-300 rounded-xl focus:border-purple-500 focus:outline-none text-gray-700">
+                    <input type="password" name="password" placeholder="Password" required class="w-full p-3 border-2 border-gray-300 rounded-xl focus:border-purple-500 focus:outline-none text-gray-700">
+                    <div class="h-captcha" data-sitekey="your-hcaptcha-sitekey"></div>
+                    <button type="submit" class="w-full bg-purple-600 text-white font-bold py-3 rounded-xl hover:bg-purple-700">Log In</button>
+                    <button type="button" id="close-login-btn" class="w-full text-gray-600 py-2 hover:text-gray-800">Cancel</button>
+                </form>
+                <p id="login-error" class="text-red-500 text-center mt-4 hidden"></p>
+                <p class="text-gray-600 text-center mt-4">Don't have an account? <a href="/register" class="text-purple-600 hover:underline">Sign up</a></p>
             </div>
         </div>
 
@@ -112,164 +104,33 @@
         <div id="paywall" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
             <div class="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl">
                 <div class="text-center">
-                    <div class="w-16 h-16 bg-gradient-to-br from-purple-600 to-pink-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <div class="w-16 h-16 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full flex items-center justify-center mx-auto mb-4">
                         <span class="text-3xl">✨</span>
                     </div>
                     <h2 class="text-3xl font-black mb-4 text-gray-800">Unlock Unlimited Remixes</h2>
                     <p class="text-gray-600 mb-6">You have used all your free tries! Upgrade to keep remixing unlimited content.</p>
                     <div id="paypal-button-container-P-5LK680852J287884DNDUFRKA"></div>
-                    <button onclick="closePaywall()" class="w-full text-gray-600 py-2 hover:text-gray-800 mt-4">Maybe later</button>
+                    <button id="close-paywall-btn" class="w-full text-gray-600 py-2 hover:text-gray-800 mt-4">Maybe later</button>
                 </div>
             </div>
         </div>
+
+        <!-- Contact Form Section -->
+        <section class="mt-12 bg-white/10 backdrop-blur-sm rounded-2xl p-6 text-white">
+            <h2 class="text-2xl font-bold mb-4 text-center">Contact Us</h2>
+            <form id="contact-form" class="space-y-4 max-w-lg mx-auto">
+                <input type="text" name="name" placeholder="Your Name" required class="w-full p-3 border-2 border-white/50 rounded-xl focus:border-white focus:outline-none text-gray-800 bg-white/80">
+                <input type="email" name="email" placeholder="Your Email" required class="w-full p-3 border-2 border-white/50 rounded-xl focus:border-white focus:outline-none text-gray-800 bg-white/80">
+                <textarea name="message" placeholder="Your Message" required class="w-full h-32 p-3 border-2 border-white/50 rounded-xl focus:border-white focus:outline-none text-gray-800 bg-white/80"></textarea>
+                <button type="submit" class="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold py-3 rounded-xl hover:from-purple-700 hover:to-pink-700 transition-all shadow-xl">Send Message</button>
+            </form>
+            <p id="contact-status" class="text-center mt-4 hidden"></p>
+        </section>
 
         <!-- Footer -->
         <div class="text-center mt-8 text-white/80 text-sm">
             <p>© 2025</p>
         </div>
     </div>
-
-    <script>
-        let usesLeft = 3;
-        let isPaid = false;
-        let currentType = 'tweet';
-        let paypalButton;
-
-        // Load stored state
-        if (localStorage.getItem('usesLeft')) usesLeft = parseInt(localStorage.getItem('usesLeft'));
-        if (localStorage.getItem('isPaid') === 'true') isPaid = true;
-
-        updateCounter();
-
-        function updateCounter() {
-            const counter = document.getElementById('uses-counter');
-            if (counter) {
-                counter.textContent = isPaid ? 'Unlimited remixes' : (usesLeft > 0 ? `${usesLeft} free remixes left` : 'Upgrade for unlimited');
-            }
-        }
-
-        function selectType(type) {
-            currentType = type;
-            const btns = ['tweet', 'email', 'ad', 'linkedin', 'blog', 'instagram', 'youtube', 'press', 'story', 'casual'];
-            btns.forEach(btnId => {
-                const btn = document.getElementById(`btn-${btnId}`);
-                if (btn) btn.className = btnId === type ? 'w-full p-3 rounded-xl text-left transition-all bg-purple-600 text-white shadow-lg' : 'w-full p-3 rounded-xl text-left transition-all bg-white text-gray-700 hover:bg-gray-100';
-            });
-        }
-
-        function doRemix() {
-            if (!isPaid && usesLeft <= 0) {
-                showPaywall();
-                return;
-            }
-
-            const input = document.getElementById('input-text').value.trim();
-            if (!input) {
-                alert('Please paste some text first!');
-                return;
-            }
-
-            const btn = document.getElementById('remix-btn');
-            btn.disabled = true;
-            btn.textContent = 'Remixing...';
-
-            const prompts = {
-                'tweet': 'Rewrite this as 3-5 engaging tweets:\n\n',
-                'email': 'Rewrite this as a professional email:\n\n',
-                'ad': 'Rewrite this as ad copy:\n\n',
-                'linkedin': 'Rewrite this as a LinkedIn post:\n\n',
-                'blog': 'Rewrite this as an SEO-friendly blog post with headings and structure:\n\n',
-                'instagram': 'Rewrite this as an engaging Instagram caption with relevant hashtags:\n\n',
-                'youtube': 'Rewrite this as a YouTube video description with timestamps and key points:\n\n',
-                'press': 'Rewrite this as a professional press release:\n\n',
-                'story': 'Rewrite this as an engaging narrative story:\n\n',
-                'casual': 'Rewrite this in a casual tone:\n\n'
-            };
-            const selectedPrompt = (prompts[currentType] || prompts['tweet']) + input;
-
-            const apiUrl = 'https://remixback.onrender.com/remixback';
-            const xhr = new XMLHttpRequest();
-            xhr.open('POST', apiUrl, true);
-            xhr.setRequestHeader('Content-Type', 'application/json');
-
-            xhr.onreadystatechange = function() {
-                console.log('ReadyState:', xhr.readyState, 'Status:', xhr.status);
-                if (xhr.readyState === 4) {
-                    console.log('Response:', xhr.responseText);
-                    if (xhr.status === 200) {
-                        try {
-                            const data = JSON.parse(xhr.responseText);
-                            document.getElementById('output-text').textContent = data.output || 'No output received';
-                            document.getElementById('copy-btn').classList.remove('hidden');
-                            if (!isPaid) {
-                                usesLeft--;
-                                localStorage.setItem('usesLeft', usesLeft);
-                                updateCounter();
-                            }
-                        } catch (e) {
-                            console.error('Parse Error:', e);
-                            alert('Failed to process API response');
-                        }
-                    } else {
-                        alert(`Error: ${xhr.status} - ${xhr.responseText || 'Server issue'}`);
-                    }
-                    btn.disabled = false;
-                    btn.textContent = 'Remix It Now';
-                }
-            };
-
-            xhr.send(JSON.stringify({ prompt: selectedPrompt }));
-        }
-
-        function doCopy() {
-            const text = document.getElementById('output-text').textContent;
-            navigator.clipboard.writeText(text).then(() => {
-                const btn = document.getElementById('copy-btn');
-                btn.textContent = 'Copied!';
-                setTimeout(() => btn.textContent = 'Copy to Clipboard', 2000);
-            });
-        }
-
-        function showPaywall() {
-            document.getElementById('paywall').classList.remove('hidden');
-            if (typeof paypal !== 'undefined' && !paypalButton) {
-                paypalButton = paypal.Buttons({
-                    style: { shape: 'pill', color: 'silver', layout: 'vertical', label: 'subscribe' },
-                    createSubscription: function(data, actions) {
-                        console.log('Creating subscription with plan_id: P-5LK680852J287884DNDUFRKA');
-                        return actions.subscription.create({ plan_id: 'P-5LK680852J287884DNDUFRKA' });
-                    },
-                    onApprove: function(data, actions) {
-                        console.log('Subscription approved with ID:', data.subscriptionID);
-                        localStorage.setItem('isPaid', 'true');
-                        localStorage.setItem('subscriptionID', data.subscriptionID);
-                        isPaid = true;
-                        updateCounter();
-                        closePaywall();
-                        alert('Welcome to Pro! You now have unlimited remixes!');
-                    },
-                    onError: function(err) {
-                        console.error('PayPal Error:', err);
-                        alert('Error with PayPal subscription: ' + (err.message || 'Unknown error. Please try again.'));
-                    },
-                    onCancel: function(data) {
-                        console.log('Subscription canceled:', data);
-                    }
-                }).render('#paypal-button-container-P-5LK680852J287884DNDUFRKA');
-                console.log('PayPal button rendered');
-            } else if (typeof paypal === 'undefined') {
-                console.error('PayPal SDK not loaded');
-                alert('PayPal is not loading. Please refresh or contact support.');
-            }
-        }
-
-        function closePaywall() {
-            document.getElementById('paywall').classList.add('hidden');
-        }
-
-        window.onload = function() {
-            if (!isPaid && usesLeft <= 0) showPaywall();
-        };
-    </script>
 </body>
 </html>
