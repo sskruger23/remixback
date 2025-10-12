@@ -7,3 +7,4 @@ python-dotenv
 flask-hcaptcha
 requests
 psycopg2-binary
+sendgrid-python

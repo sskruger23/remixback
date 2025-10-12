@@ -94,7 +94,15 @@ async function doRemix() {
         'youtube': 'Rewrite this as a YouTube video description with timestamps and key points:\n\n',
         'press': 'Rewrite this as a professional press release:\n\n',
         'story': 'Rewrite this as an engaging narrative story:\n\n',
-        'casual': 'Rewrite this in a casual tone:\n\n'
+        'casual': 'Rewrite this in a casual tone:\n\n',
+        'followup': 'Rewrite this as a friendly follow-up text message:\n\n',
+        'apology': 'Rewrite this as a quick, sincere apology text message:\n\n',
+        'reminder': 'Rewrite this as an urgent, direct reminder text message:\n\n',
+        'smalltalk': 'Rewrite this as an easy, approachable small talk starter:\n\n',
+        'agenda': 'Rewrite this as a focused, engaging meeting agenda teaser:\n\n',
+        'interview': 'Rewrite this as a confident, concise job interview pitch:\n\n',
+        'salespitch': 'Rewrite this as a persuasive, smooth sales pitch opener:\n\n',
+        'thanks': 'Rewrite this as a grateful, natural casual thank-you speech:\n\n'
     };
     const selectedPrompt = (prompts[currentType] || prompts['tweet']) + input;
 
@@ -187,67 +195,4 @@ document.addEventListener('DOMContentLoaded', () => {
                 method: 'POST',
                 body: formData
             });
-            const result = await response.json();
-            if (response.ok) {
-                statusDiv.textContent = 'Message sent successfully!';
-                e.target.reset();
-            } else {
-                statusDiv.classList.remove('text-green-500');
-                statusDiv.classList.add('text-red-500');
-                statusDiv.textContent = result.error || 'Failed to send message.';
-            }
-        } catch (e) {
-            statusDiv.classList.remove('text-green-500');
-            statusDiv.classList.add('text-red-500');
-            statusDiv.textContent = 'Failed to connect to server.';
-        }
-    });
-
-    // Event listeners for buttons
-    document.getElementById('login-btn').addEventListener('click', showLogin);
-    document.getElementById('close-login-btn').addEventListener('click', closeLogin);
-    document.getElementById('close-paywall-btn').addEventListener('click', closePaywall);
-    document.getElementById('remix-btn').addEventListener('click', doRemix);
-    document.getElementById('copy-btn').addEventListener('click', doCopy);
-    document.getElementById('remix-type').addEventListener('change', selectType);
-    document.getElementById('logout-btn').addEventListener('click', async () => {
-        const response = await fetch('/logout');
-        const result = await response.json();
-        if (response.ok) {
-            localStorage.removeItem('isPaid');
-            localStorage.removeItem('usesLeft');
-            isPaid = false;
-            usesLeft = 3;
-            updateCounter();
-            document.getElementById('login-btn').classList.remove('hidden');
-            document.getElementById('logout-btn').classList.add('hidden');
-            window.location.href = result.redirect;
-        }
-    });
-
-    // Check session on load
-    async function checkSession() {
-        try {
-            const response = await fetch('/check_session', {
-                method: 'GET',
-                headers: { 'Content-Type': 'application/json' }
-            });
-            const data = await response.json();
-            if (response.ok && data.logged_in) {
-                isPaid = data.is_paid;
-                usesLeft = data.uses_left;
-                localStorage.setItem('isPaid', isPaid);
-                localStorage.setItem('usesLeft', usesLeft);
-                updateCounter();
-                document.getElementById('login-btn').classList.add('hidden');
-                document.getElementById('logout-btn').classList.remove('hidden');
-            } else if (!isPaid && usesLeft <= 0) {
-                showPaywall();
-            }
-        } catch (e) {
-            console.error('Session check failed:', e);
-        }
-    }
-
-    checkSession();
-});
+            const result = await response.json
