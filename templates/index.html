@@ -14,7 +14,6 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://www.paypal.com/sdk/js?client-id=AZGW3y8tnDTpa4IQZWmD_W73F6nx-8fpjl-WJDR2U4mGtVxrDGOvJhZZCngG-yIMUPUsLXpozO3F-OuB&vault=true&intent=subscription" data-sdk-integration-source="button-factory"></script>
     <script src="https://js.hcaptcha.com/1/api.js" async defer></script>
-    <script src="/static/script.js" defer></script>
 </head>
 <body class="bg-gradient-to-br from-purple-600 via-pink-500 to-orange-400 min-h-screen text-white">
     <div class="container mx-auto px-4 py-8 max-w-6xl">
@@ -23,7 +22,7 @@
             <img src="https://res.cloudinary.com/dvovudqsd/image/upload/v1760056331/og-logo.png" alt="NextLogicAI Logo" class="mx-auto h-36 w-auto mb-4" onerror="this.src='https://res.cloudinary.com/dvovudqsd/image/upload/v1760056331/og-logo.png';">
             <p class="text-xl font-medium">Transform your content with AI-powered rewriting</p>
             <div class="mt-4 flex justify-center items-center">
-                <p class="font-semibold bg-white/20 backdrop-blur-sm rounded-full px-6 py-2" id="uses-counter">3 free remixes left</p>
+                <p class="font-semibold bg-white/20 backdrop-blur-sm rounded-full px-6 py-2" id="uses-counter">Checking session...</p>
                 <button id="login-btn" class="ml-4 bg-white/20 backdrop-blur-sm rounded-full px-6 py-2 font-semibold">Log In</button>
                 <button id="logout-btn" class="ml-4 bg-white/20 backdrop-blur-sm rounded-full px-6 py-2 font-semibold hidden">Log Out</button>
             </div>
@@ -42,33 +41,33 @@
                 <div class="p-8 bg-gradient-to-br from-gray-50 to-gray-100">
                     <h2 class="text-2xl font-bold mb-4 text-gray-800">Your Original Content</h2>
                     <textarea id="input-text" placeholder="Paste your blog post, rant, idea, or anything here..." class="w-full h-64 p-4 border-2 border-gray-300 rounded-xl resize-none focus:border-purple-500 focus:outline-none text-gray-700 text-sm"></textarea>
-<div class="mt-6">
-    <label class="block text-sm font-bold text-gray-700 mb-3">Transform it into:</label>
-    <select id="remix-type" class="w-full p-3 rounded-xl bg-white border-2 border-gray-300 focus:border-purple-500 focus:outline-none text-gray-700 shadow-lg hover:shadow-xl transition-shadow">
-        <option value="tweet">Twitter Thread - Punchy, engaging tweets</option>
-        <option value="email">📨 Professional Email - Clear, polished tone</option>
-        <option value="ad">📣 Ad Copy - Persuasive and catchy</option>
-        <option value="linkedin">💼 LinkedIn Post - Professional insights</option>
-        <option value="blog">📝 Blog Post - SEO-friendly article</option>
-        <option value="instagram">📸 Instagram Caption - Engaging with hashtags</option>
-        <option value="youtube">🎥 YouTube Description - Optimized with timestamps</option>
-        <option value="press">📰 Press Release - Professional announcement</option>
-        <option value="story">📖 Story/Narrative - Engaging storytelling</option>
-        <option value="casual">😎 Casual Friendly - Relaxed and fun</option>
-        <option value="followup">💬 Friendly Follow-Up - Warm and casual</option>
-        <option value="apology">🙏 Quick Apology - Sincere and brief</option>
-        <option value="reminder">⏰ Urgent Reminder - Direct and clear</option>
-        <option value="smalltalk">👋 Small Talk Starter - Easy and approachable</option>
-        <option value="agenda">📅 Meeting Agenda Teaser - Focused and engaging</option>
-        <option value="interview">🎤 Job Interview Pitch - Confident and concise</option>
-        <option value="salespitch">💼 Sales Pitch Opener - Persuasive and smooth</option>
-        <option value="thanks">❤️ Casual Thank-You Speech - Grateful and natural</option>
-    </select>
-</div>
-<p class="text-red-600 text-sm mt-4">Warning: It can take up to 2 minutes to render the full message.</p>
-<button id="remix-btn" class="w-full mt-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold py-4 rounded-xl hover:from-purple-700 hover:to-pink-700 transition-all shadow-xl">
-    Remix It Now
-</button>
+                    <div class="mt-6">
+                        <label class="block text-sm font-bold text-gray-700 mb-3">Transform it into:</label>
+                        <select id="remix-type" class="w-full p-3 rounded-xl bg-white border-2 border-gray-300 focus:border-purple-500 focus:outline-none text-gray-700 shadow-lg hover:shadow-xl transition-shadow">
+                            <option value="tweet">Twitter Thread - Punchy, engaging tweets</option>
+                            <option value="email">📨 Professional Email - Clear, polished tone</option>
+                            <option value="ad">📣 Ad Copy - Persuasive and catchy</option>
+                            <option value="linkedin">💼 LinkedIn Post - Professional insights</option>
+                            <option value="blog">📝 Blog Post - SEO-friendly article</option>
+                            <option value="instagram">📸 Instagram Caption - Engaging with hashtags</option>
+                            <option value="youtube">🎥 YouTube Description - Optimized with timestamps</option>
+                            <option value="press">📰 Press Release - Professional announcement</option>
+                            <option value="story">📖 Story/Narrative - Engaging storytelling</option>
+                            <option value="casual">😎 Casual Friendly - Relaxed and fun</option>
+                            <option value="followup">💬 Friendly Follow-Up - Warm and casual</option>
+                            <option value="apology">🙏 Quick Apology - Sincere and brief</option>
+                            <option value="reminder">⏰ Urgent Reminder - Direct and clear</option>
+                            <option value="smalltalk">👋 Small Talk Starter - Easy and approachable</option>
+                            <option value="agenda">📅 Meeting Agenda Teaser - Focused and engaging</option>
+                            <option value="interview">🎤 Job Interview Pitch - Confident and concise</option>
+                            <option value="salespitch">💼 Sales Pitch Opener - Persuasive and smooth</option>
+                            <option value="thanks">❤️ Casual Thank-You Speech - Grateful and natural</option>
+                        </select>
+                    </div>
+                    <p class="text-red-600 text-sm mt-4">⚠️ Warning: It can take up to 2 minutes to render the full message.</p>
+                    <button id="remix-btn" class="w-full mt-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold py-4 rounded-xl hover:from-purple-700 hover:to-pink-700 transition-all shadow-xl disabled:opacity-50" disabled>
+                        🔐 Log in to remix!
+                    </button>
                 </div>
 
                 <!-- Output Panel -->
@@ -78,11 +77,11 @@
                         Your remixed content will appear here...
                     </div>
                     <button id="copy-btn" class="w-full mt-4 bg-green-500 text-white font-bold py-3 rounded-xl hover:bg-green-600 transition-all hidden">
-                        Copy to Clipboard
+                        📋 Copy to Clipboard
                     </button>
                     <div class="mt-8 space-y-3">
                         <p class="text-gray-600 text-md">Our AI content rewriter is perfect for busy marketers, writers, and content creators. From crafting persuasive ad copy to generating LinkedIn posts that boost your professional network, NextLogicAI adapts to your needs.</p>
-                        <p class="mt-4 text-gray-600 text-md">Start with our <b>free tier</b> to see the magic happen. With each remix, you’ll save time while producing high-quality content tailored to any platform—<b>try it today!</b></p>
+                        <p class="mt-4 text-gray-600 text-md">Start with our <b>free tier</b> to see the magic happen. With each remix, you'll save time while producing high-quality content tailored to any platform—<b>try it today!</b></p>
                     </div>
                 </div>
             </div>
@@ -91,11 +90,11 @@
         <!-- Login Modal -->
         <div id="login-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
             <div class="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl">
-                <h2 class="text-3xl font-black mb-4 text-gray-800">Log In</h2>
+                <h2 class="text-3xl font-black mb-4 text-gray-800">🔐 Log In</h2>
                 <form id="login-form" class="space-y-4">
                     <input type="text" name="username" placeholder="Username" required class="w-full p-3 border-2 border-gray-300 rounded-xl focus:border-purple-500 focus:outline-none text-gray-700">
                     <input type="password" name="password" placeholder="Password" required class="w-full p-3 border-2 border-gray-300 rounded-xl focus:border-purple-500 focus:outline-none text-gray-700">
-                    <div class="h-captcha" data-sitekey="{{ hcaptcha_site_key }}"></div>
+                    <div class="h-captcha" data-sitekey="03861fa2-8edc-453e-bff0-ea7aa718b4b0"></div>
                     <button type="submit" class="w-full bg-purple-600 text-white font-bold py-3 rounded-xl hover:bg-purple-700">Log In</button>
                     <button type="button" id="close-login-btn" class="w-full text-gray-600 py-2 hover:text-gray-800">Cancel</button>
                 </form>
@@ -112,8 +111,8 @@
                         <span class="text-3xl">✨</span>
                     </div>
                     <h2 class="text-3xl font-black mb-4 text-gray-800">Unlock Unlimited Remixes</h2>
-                    <p class="text-gray-600 mb-6">You have used all your free tries! Upgrade to keep remixing unlimited content.</p>
-                    <div id="paypal-button-container-P-5LK680852J287884DNDUFRKA"></div>
+                    <p class="text-gray-600 mb-6">You have used all your free tries! Upgrade for just <strong>$4.99/month</strong></p>
+                    <div id="paypal-button-container"></div>
                     <button id="close-paywall-btn" class="w-full text-gray-600 py-2 hover:text-gray-800 mt-4">Maybe later</button>
                 </div>
             </div>
@@ -121,7 +120,7 @@
 
         <!-- Contact Form Section -->
         <section class="mt-12 bg-white/10 backdrop-blur-sm rounded-2xl p-6 text-white">
-            <h2 class="text-2xl font-bold mb-4 text-center">Contact Us</h2>
+            <h2 class="text-2xl font-bold mb-4 text-center">📧 Contact Us</h2>
             <form id="contact-form" class="space-y-4 max-w-lg mx-auto">
                 <input type="text" name="name" placeholder="Your Name" required class="w-full p-3 border-2 border-white/50 rounded-xl focus:border-white focus:outline-none text-gray-800 bg-white/80">
                 <input type="email" name="email" placeholder="Your Email" required class="w-full p-3 border-2 border-white/50 rounded-xl focus:border-white focus:outline-none text-gray-800 bg-white/80">
@@ -133,8 +132,254 @@
 
         <!-- Footer -->
         <div class="text-center mt-8 text-white/80 text-sm">
-            <p>© 2025</p>
+            <p>© 2025 NextLogicAI</p>
         </div>
     </div>
+
+    <script>
+        // COMPLETE JAVASCRIPT - ALL BUTTONS WORKING!
+        document.addEventListener('DOMContentLoaded', () => {
+            let currentUsesLeft = 3;
+            let isLoggedIn = false;
+            let isPaid = false;
+
+            // === UTILITY FUNCTIONS ===
+            function updateUI() {
+                const counter = document.getElementById('uses-counter');
+                const loginBtn = document.getElementById('login-btn');
+                const logoutBtn = document.getElementById('logout-btn');
+                const remixBtn = document.getElementById('remix-btn');
+                
+                if (isLoggedIn) {
+                    loginBtn.classList.add('hidden');
+                    logoutBtn.classList.remove('hidden');
+                    if (isPaid) {
+                        counter.textContent = 'Unlimited remixes! ✨';
+                        counter.className = 'font-semibold bg-green-500/20 backdrop-blur-sm rounded-full px-6 py-2';
+                    } else {
+                        counter.textContent = `${currentUsesLeft} free remixes left`;
+                        counter.className = 'font-semibold bg-white/20 backdrop-blur-sm rounded-full px-6 py-2';
+                    }
+                    remixBtn.disabled = false;
+                    remixBtn.textContent = 'Remix It Now';
+                } else {
+                    loginBtn.classList.remove('hidden');
+                    logoutBtn.classList.add('hidden');
+                    counter.textContent = '3 free remixes left';
+                    counter.className = 'font-semibold bg-white/20 backdrop-blur-sm rounded-full px-6 py-2';
+                    remixBtn.disabled = true;
+                    remixBtn.textContent = '🔐 Log in to remix!';
+                }
+            }
+
+            function showError(message) {
+                const output = document.getElementById('output-text');
+                output.textContent = `❌ Error: ${message}`;
+                document.getElementById('copy-btn').classList.add('hidden');
+            }
+
+            // === SESSION CHECK ===
+            async function checkSession() {
+                try {
+                    const response = await fetch('/check_session');
+                    const data = await response.json();
+                    isLoggedIn = data.logged_in;
+                    isPaid = data.is_paid || false;
+                    if (data.uses_left !== undefined) {
+                        currentUsesLeft = data.uses_left;
+                    }
+                    updateUI();
+                } catch (error) {
+                    console.error('Session check failed:', error);
+                    updateUI();
+                }
+            }
+
+            // === REMIX BUTTON ===
+            document.getElementById('remix-btn').addEventListener('click', async () => {
+                const remixBtn = document.getElementById('remix-btn');
+                const inputText = document.getElementById('input-text').value.trim();
+                const remixType = document.getElementById('remix-type').value;
+                
+                if (!inputText) {
+                    showError('Please enter some text to remix!');
+                    return;
+                }
+
+                remixBtn.disabled = true;
+                remixBtn.innerHTML = '⏳ Remixing... (up to 2 min)';
+                document.getElementById('output-text').textContent = '🤖 AI is working its magic...';
+
+                try {
+                    const response = await fetch('/remix', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ prompt: inputText, 'remix-type': remixType })
+                    });
+
+                    const data = await response.json();
+
+                    if (response.ok && data.output) {
+                        document.getElementById('output-text').textContent = data.output;
+                        document.getElementById('copy-btn').classList.remove('hidden');
+                        
+                        if (data.uses_left !== undefined) {
+                            currentUsesLeft = data.uses_left;
+                            if (!isPaid && currentUsesLeft <= 0) {
+                                document.getElementById('paywall').classList.remove('hidden');
+                            }
+                        }
+                        checkSession();
+                    } else {
+                        if (data.error && data.error.includes('No free remixes')) {
+                            document.getElementById('paywall').classList.remove('hidden');
+                        } else {
+                            showError(data.error || 'Something went wrong!');
+                        }
+                    }
+                } catch (error) {
+                    showError('Connection error. Please try again.');
+                    console.error('Remix error:', error);
+                } finally {
+                    remixBtn.disabled = false;
+                    remixBtn.innerHTML = 'Remix It Now';
+                }
+            });
+
+            // === COPY BUTTON ===
+            document.getElementById('copy-btn').addEventListener('click', async () => {
+                const text = document.getElementById('output-text').textContent;
+                try {
+                    await navigator.clipboard.writeText(text);
+                    const btn = document.getElementById('copy-btn');
+                    const originalText = btn.textContent;
+                    btn.textContent = '✅ Copied!';
+                    btn.style.backgroundColor = '#10b981';
+                    setTimeout(() => {
+                        btn.textContent = originalText;
+                        btn.style.backgroundColor = '';
+                    }, 2000);
+                } catch (err) {
+                    alert('Failed to copy. Please select and copy manually.');
+                }
+            });
+
+            // === LOGIN MODAL ===
+            document.getElementById('login-btn').addEventListener('click', () => {
+                document.getElementById('login-modal').classList.remove('hidden');
+                document.getElementById('login-error').classList.add('hidden');
+            });
+
+            document.getElementById('close-login-btn').addEventListener('click', () => {
+                document.getElementById('login-modal').classList.add('hidden');
+            });
+
+            // === LOGIN FORM ===
+            document.getElementById('login-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const formData = new FormData(e.target);
+                const hcaptchaResponse = document.querySelector('textarea[name="h-captcha-response"]')?.value;
+
+                try {
+                    const response = await fetch('/login', {
+                        method: 'POST',
+                        body: new URLSearchParams({
+                            ...Object.fromEntries(formData),
+                            'h-captcha-response': hcaptchaResponse
+                        })
+                    });
+
+                    const data = await response.json();
+
+                    if (response.ok) {
+                        isLoggedIn = true;
+                        isPaid = data.is_paid;
+                        currentUsesLeft = data.uses_left;
+                        document.getElementById('login-modal').classList.add('hidden');
+                        updateUI();
+                        alert('Login successful! 🎉');
+                    } else {
+                        document.getElementById('login-error').textContent = data.error;
+                        document.getElementById('login-error').classList.remove('hidden');
+                    }
+                } catch (error) {
+                    document.getElementById('login-error').textContent = 'Login failed. Please try again.';
+                    document.getElementById('login-error').classList.remove('hidden');
+                }
+            });
+
+            // === LOGOUT ===
+            document.getElementById('logout-btn').addEventListener('click', async () => {
+                try {
+                    await fetch('/logout');
+                    isLoggedIn = false;
+                    isPaid = false;
+                    currentUsesLeft = 3;
+                    updateUI();
+                } catch (error) {
+                    console.error('Logout error:', error);
+                }
+            });
+
+            // === CONTACT FORM ===
+            document.getElementById('contact-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const formData = new FormData(e.target);
+                const status = document.getElementById('contact-status');
+
+                try {
+                    const response = await fetch('/contact', {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    const data = await response.json();
+                    if (response.ok) {
+                        status.textContent = '✅ Message sent successfully!';
+                        status.className = 'text-center mt-4 text-green-400';
+                        e.target.reset();
+                    } else {
+                        status.textContent = `❌ ${data.error}`;
+                        status.className = 'text-center mt-4 text-red-400';
+                    }
+                } catch (error) {
+                    status.textContent = '❌ Failed to send message.';
+                    status.className = 'text-center mt-4 text-red-400';
+                }
+                status.classList.remove('hidden');
+            });
+
+            // === PAYWALL MODAL ===
+            document.getElementById('close-paywall-btn').addEventListener('click', () => {
+                document.getElementById('paywall').classList.add('hidden');
+            });
+
+            // === PAYPAL BUTTON ===
+            paypal.Buttons({
+                createSubscription: function(data, actions) {
+                    return actions.subscription.create({
+                        plan_id: 'P-5LK680852J287884DNDUFRKA'
+                    });
+                },
+                onApprove: function(data, actions) {
+                    return fetch('/update_subscription', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({subscriptionID: data.subscriptionID})
+                    }).then(() => {
+                        document.getElementById('paywall').classList.add('hidden');
+                        location.reload();
+                    });
+                },
+                onError: function(err) {
+                    alert('Payment error. Please try again.');
+                }
+            }).render('#paypal-button-container');
+
+            // === INITIALIZE ===
+            checkSession();
+            document.getElementById('input-text').focus();
+        });
+    </script>
 </body>
 </html>
