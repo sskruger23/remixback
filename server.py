@@ -86,6 +86,9 @@ limiter = Limiter(app=app, key_func=get_remote_address, default_limits=["100 per
 login_limiter = limiter.shared_limit("5 per minute", scope="login")
 
 # Routes
+@app.route('/')
+def index():
+    return render_template('index.html')
 @app.route('/login', methods=['GET', 'POST'])
 @login_limiter
 def login():
