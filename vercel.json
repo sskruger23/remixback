@@ -1,0 +1,6 @@
+{
+  "rewrites": [
+    { "source": "/(login|register)", "destination": "/$1" },
+    { "source": "/static/:path*", "destination": "/static/:path*" }
+  ]
+}
