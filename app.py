@@ -8,8 +8,8 @@ from dotenv import load_dotenv
 import psycopg2
 from psycopg2.extras import RealDictCursor
 from bcrypt import hashpw, gensalt, checkpw
+from flask import make_response
 
-# Initialize Flask app
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('FLASK_SECRET_KEY', '2f28a2528a8149a1333078c5985fc3f55508bba01390828e')
 app.config['SESSION_TYPE'] = 'filesystem'
@@ -18,7 +18,6 @@ app.config['SESSION_PERMANENT'] = False
 load_dotenv()
 CORS(app)
 
-# Initialize Session
 try:
     Session(app)
     os.makedirs(app.config['SESSION_FILE_DIR'], exist_ok=True)
@@ -27,7 +26,6 @@ except Exception as e:
     print(f"Failed to initialize session: {str(e)}", file=sys.stderr)
     sys.exit(1)
 
-# Database connection
 db_url = os.getenv('DATABASE_URL')
 try:
     conn = psycopg2.connect(db_url)
@@ -37,20 +35,17 @@ except Exception as e:
     print(f"Database connection failed: {str(e)}", file=sys.stderr)
     sys.exit(1)
 
-# Close DB on app context teardown
 @app.teardown_appcontext
 def close_db(error):
     if 'conn' in globals() and conn:
         conn.close()
 
-# Configuration
 API_KEY = os.getenv('GENERATIVE_API_KEY')
 PAYPAL_PLAN = os.getenv('PAYPAL_PLAN', 'P-5LK680852J287884DNDUFRKA')
 
 def log_error(message):
     print(f"ERROR: {message}", file=sys.stderr)
 
-# Initialize database (create users table if not exists)
 def init_db():
     cur.execute("""
         CREATE TABLE IF NOT EXISTS users (
@@ -61,7 +56,6 @@ def init_db():
         )
     """)
     conn.commit()
-    # Insert default user if not exists
     cur.execute("SELECT username FROM users WHERE username = 'test'")
     if not cur.fetchone():
         cur.execute("INSERT INTO users (username, password, paid, uses) VALUES (%s, %s, %s, %s)",
@@ -71,22 +65,37 @@ def init_db():
 
 init_db()
 
-session_uses = {}  # Temporary in-memory cache for uses (to be replaced with DB later)
+# Track unpaid users with cookies
+def get_user_uses(ip_address):
+    cur.execute("SELECT uses FROM users WHERE username = (SELECT username FROM session WHERE session_id = %s)", (session.sid,))
+    user_data = cur.fetchone()
+    if user_data:
+        return user_data['uses']
+    # Fallback for anonymous users (IP-based)
+    cookie_uses = request.cookies.get(f'uses_{ip_address}')
+    return int(cookie_uses) if cookie_uses else 3
+
+def set_user_uses(ip_address, uses):
+    response = make_response(jsonify({'message': 'Uses updated'}))
+    response.set_cookie(f'uses_{ip_address}', str(uses), max_age=3600)  # 1-hour expiry
+    return response
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('index.html', paypal_plan=PAYPAL_PLAN)
 
 @app.route('/check_session')
 def check_session():
     user = session.get('user')
+    ip_address = request.remote_addr
     if user:
         cur.execute("SELECT paid, uses FROM users WHERE username = %s", (user,))
         user_data = cur.fetchone()
         if user_data:
-            uses_left = session_uses.get(user, user_data['uses'])
-            return jsonify({'logged_in': True, 'is_paid': user_data['paid'], 'uses_left': uses_left})
-    return jsonify({'logged_in': False})
+            return jsonify({'logged_in': True, 'is_paid': user_data['paid'], 'uses_left': user_data['uses']})
+    else:
+        uses_left = get_user_uses(ip_address)
+        return jsonify({'logged_in': False, 'uses_left': uses_left})
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -110,7 +119,6 @@ def login():
         user_data = cur.fetchone()
         if user_data and checkpw(password.encode(), user_data['password']):
             session['user'] = username.lower()
-            session_uses[username.lower()] = user_data['uses']
             return jsonify({'message': 'Login OK', 'is_paid': user_data['paid'], 'uses_left': user_data['uses']})
         return jsonify({'error': 'Invalid credentials'}), 401
     except Exception as e:
@@ -143,7 +151,6 @@ def register():
                     (username, hashed_password, False, 3))
         conn.commit()
         session['user'] = username
-        session_uses[username] = 3
         return jsonify({'message': 'Registration successful', 'redirect': '/login'})
     except Exception as e:
         log_error(f"Register error: {str(e)}")
@@ -155,7 +162,6 @@ def logout():
         user = session.get('user')
         if user:
             session.pop('user', None)
-            session_uses.pop(user, None)
         return jsonify({'message': 'Logged out'})
     except Exception as e:
         log_error(f"Logout error: {str(e)}")
@@ -165,12 +171,21 @@ def logout():
 def remix():
     try:
         user = session.get('user')
-        if not user:
-            return jsonify({'error': 'Log in first!'}), 401
-        cur.execute("SELECT uses FROM users WHERE username = %s", (user,))
-        user_data = cur.fetchone()
-        if not user_data or user_data['uses'] <= 0:
+        ip_address = request.remote_addr
+        if user:
+            cur.execute("SELECT paid, uses FROM users WHERE username = %s", (user,))
+            user_data = cur.fetchone()
+            if not user_data:
+                return jsonify({'error': 'User not found'}), 404
+            uses_left = user_data['uses']
+            is_paid = user_data['paid']
+        else:
+            uses_left = get_user_uses(ip_address)
+            is_paid = False
+
+        if not is_paid and uses_left <= 0:
             return jsonify({'error': 'No free remixes left!'}), 403
+
         prompt = request.json.get('prompt')
         if not prompt:
             return jsonify({'error': 'Prompt is required'}), 400
@@ -184,9 +199,15 @@ def remix():
         if not data.get('candidates'):
             raise Exception("No candidates returned from API")
         output = data['candidates'][0]['content']['parts'][0]['text']
-        cur.execute("UPDATE users SET uses = uses - 1 WHERE username = %s", (user,))
-        conn.commit()
-        return jsonify({'output': output, 'uses_left': user_data['uses'] - 1})
+
+        if not is_paid:
+            if user:
+                cur.execute("UPDATE users SET uses = uses - 1 WHERE username = %s", (user,))
+                conn.commit()
+            else:
+                set_user_uses(ip_address, uses_left - 1)
+
+        return jsonify({'output': output, 'uses_left': uses_left - 1 if not is_paid else None})
     except Exception as e:
         log_error(f"Remix error: {str(e)}")
         return jsonify({'error': str(e)}), 500
@@ -211,7 +232,6 @@ def contact():
         message = request.form.get('message')
         if not all([name, email, message]):
             return jsonify({'error': 'All fields are required'}), 400
-        # Add SendGrid integration here if desired (using SENDGRID_API_KEY)
         print(f"Contact from {name} ({email}): {message}")
         return jsonify({'message': 'Message sent! (demo)'})
     except Exception as e:
