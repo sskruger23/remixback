@@ -19,13 +19,12 @@ CORS(app)
 try:
     Session(app)
     print(f"Session initialized, directory: {app.config['SESSION_FILE_DIR']}")
-    # Create session directory if it doesn't exist
     os.makedirs(app.config['SESSION_FILE_DIR'], exist_ok=True)
 except Exception as e:
     print(f"Failed to initialize session: {str(e)}", file=sys.stderr)
     sys.exit(1)
 
-API_KEY = os.getenv('GENERATIVE_API_KEY', 'YOUR_GEMINI_KEY_HERE')  # Replace with your key
+API_KEY = os.getenv('GENERATIVE_API_KEY')
 PAYPAL_PLAN = 'P-5LK680852J287884DNDUFRKA'
 
 users = {'test': {'password': 'test', 'paid': False, 'uses': 3}}
@@ -48,17 +47,17 @@ def check_session():
     print("Session check: No user logged in")
     return jsonify({'logged_in': False})
 
-@app.route('/login', methods=['POST'])
+@app.route('/login', methods=['GET', 'POST'])
 def login():
+    if request.method == 'GET':
+        return render_template('login.html')
     try:
-        # Get raw form data
         username = request.form.get('username', '').strip()
         password = request.form.get('password', '').strip()
         print(f"Login attempt: Raw Username={username!r}, Raw Password={password!r}, Form data={dict(request.form)}, Headers={dict(request.headers)}, Session={session}")
 
-        # Debug: Accept variations for testing
         if username.lower() == 'test' and password.lower() == 'test':
-            session['user'] = 'test'  # Force set to 'test'
+            session['user'] = 'test'
             session_uses['test'] = 3
             print(f"Login success: Session set for test")
             return jsonify({'message': 'Login OK', 'is_paid': False, 'uses_left': 3})
@@ -66,6 +65,33 @@ def login():
         return jsonify({'error': 'Use test/test (case insensitive)'}), 401
     except Exception as e:
         log_error(f"Login error: {str(e)} with traceback: {str(e.__traceback__)}")
+        return jsonify({'error': f'Server error: {str(e)}'}), 500
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'GET':
+        return render_template('register.html')
+    try:
+        username = request.form.get('username', '').strip()
+        password = request.form.get('password', '').strip()
+        hcaptcha_response = request.form.get('h-captcha-response')
+        if not hcaptcha_response:
+            return jsonify({'error': 'Please complete the hCaptcha'}), 400
+        secret_key = os.getenv('HCAPTCHA_SECRET_KEY')
+        verify_url = 'https://hcaptcha.com/siteverify'
+        response = requests.post(verify_url, data={'secret': secret_key, 'response': hcaptcha_response})
+        result = response.json()
+        if not result.get('success'):
+            return jsonify({'error': 'Invalid hCaptcha'}), 400
+        if username in users:
+            return jsonify({'error': 'Username already exists'}), 400
+        users[username] = {'password': password, 'paid': False, 'uses': 3}
+        session['user'] = username
+        session_uses[username] = 3
+        print(f"Registration success: User {username} created")
+        return jsonify({'message': 'Registration successful', 'redirect': '/login'})
+    except Exception as e:
+        log_error(f"Register error: {str(e)}")
         return jsonify({'error': f'Server error: {str(e)}'}), 500
 
 @app.route('/logout')
@@ -108,6 +134,10 @@ def remix():
         response = requests.post(url, json=payload)
         print(f"API Response: Status={response.status_code}")
         data = response.json()
+        if 'error' in data:
+            raise Exception(f"API error: {data['error']['message']}")
+        if not data.get('candidates'):
+            raise Exception("No candidates returned from API")
         output = data['candidates'][0]['content']['parts'][0]['text']
         session_uses[user] = uses_left - 1
         print(f"Remix success: Output length={len(output)}")

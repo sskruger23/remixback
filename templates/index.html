@@ -1,113 +1,165 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NextLogicAI - Free AI Content Rewriter</title>
-    <meta name="description" content="Transform your content with NextLogicAI's AI-powered rewriter. Turn blog posts into engaging Twitter threads, emails, SEO articles, and more. Start with 3 free remixes!">
-    <meta property="og:title" content="NextLogicAI - AI Content Rewriter">
-    <meta property="og:description" content="Rewrite content into tweets, emails, ads, and more with AI. Try it free!">
-    <meta property="og:image" content="https://res.cloudinary.com/dvovudqsd/image/upload/v1760056331/og-logo.png">
-    <meta property="og:url" content="https://www.nextlogicai.com">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:image" content="https://res.cloudinary.com/dvovudqsd/image/upload/v1760056331/og-logo.png">
+    <title>NextLogicAI</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://www.paypal.com/sdk/js?client-id=AZGW3y8tnDTpa4IQZWmD_W73F6nx-8fpjl-WJDR2U4mGtVxrDGOvJhZZCngG-yIMUPUsLXpozO3F-OuB&vault=true&intent=subscription" data-sdk-integration-source="button-factory"></script>
-    <script src="https://js.hcaptcha.com/1/api.js" async defer></script>
-    <script src="/static/script.js" defer></script>
+    <script src="https://www.paypal.com/sdk/js?client-id=AZGW3y8tnDTpa4IQZWmD_W73F6nx-8fpjl-WJDR2U4mGtVxrDGOvJhZZCngG-yIMUPUsLXpozO3F-OuB&vault=true&intent=subscription"></script>
 </head>
-<body class="bg-gradient-to-br from-purple-600 via-pink-500 to-orange-400 min-h-screen text-white">
-    <div class="container mx-auto px-4 py-8 max-w-6xl">
-        <!-- Header -->
-        <header class="text-center mb-12">
-            <img src="https://res.cloudinary.com/dvovudqsd/image/upload/v1760056331/og-logo.png" alt="NextLogicAI Logo" class="mx-auto h-36 w-auto mb-4" onerror="this.src='https://res.cloudinary.com/dvovudqsd/image/upload/v1760056331/og-logo.png';">
-            <h1 class="text-2xl font-bold">Transform Your Content with AI</h1>
-            <div class="mt-4 flex justify-center items-center space-x-4">
-                <span id="uses-counter" class="bg-white/20 backdrop-blur-sm rounded-full px-4 py-2 font-semibold">3 free remixes left</span>
-                <button id="login-btn" class="bg-white/20 backdrop-blur-sm rounded-full px-4 py-2 font-semibold">Log In</button>
-                <button id="logout-btn" class="bg-white/20 backdrop-blur-sm rounded-full px-4 py-2 font-semibold hidden">Log Out</button>
+<body class="bg-gradient-to-br from-purple-600 to-pink-500 min-h-screen text-white p-4">
+    <div class="max-w-4xl mx-auto">
+        <!-- HEADER -->
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-bold">✨ NextLogicAI</h1>
+            <p id="uses-counter" class="bg-white/20 p-2 rounded-full mt-2">Checking...</p>
+            <button id="login-btn" class="bg-white/20 px-4 py-2 rounded-full mt-2">Log In</button>
+            <button id="logout-btn" class="bg-white/20 px-4 py-2 rounded-full mt-2 hidden">Log Out</button>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-4">
+            <!-- INPUT -->
+            <div class="bg-white/10 p-4 rounded-xl">
+                <h2 class="text-xl font-bold mb-2">📝 Your Text</h2>
+                <textarea id="input-text" class="w-full h-40 p-2 rounded text-black" placeholder="Type anything..."></textarea>
+                <select id="remix-type" class="w-full p-2 mt-2 rounded text-black">
+                    <option value="blog">Blog Post</option>
+                    <option value="tweet">Twitter</option>
+                    <option value="email">Email</option>
+                </select>
+                <button id="remix-btn" class="w-full bg-purple-600 p-3 rounded mt-2" disabled>🔐 Log In</button>
             </div>
-        </header>
 
-        <!-- Welcome Section -->
-        <section class="mb-8 bg-white/10 backdrop-blur-sm rounded-xl p-6 text-white text-center">
-            <p class="text-lg">Welcome to NextLogicAI, your free AI content rewriter! Craft blog posts, Twitter threads, emails, and more in seconds. Start with 3 free remixes and unlock unlimited power for $4.99/month.</p>
-        </section>
-
-        <!-- Main Content -->
-        <div class="bg-white rounded-3xl shadow-lg overflow-hidden">
-            <div class="grid md:grid-cols-2 gap-0">
-                <!-- Input Panel -->
-                <div class="p-6 bg-gray-50">
-                    <h2 class="text-xl font-bold mb-4 text-gray-800">Your Original Content</h2>
-                    <textarea id="input-text" placeholder="Paste your text here..." class="w-full h-64 p-4 border-2 border-gray-300 rounded-lg focus:border-purple-500 focus:outline-none text-gray-700"></textarea>
-                    <div class="mt-4">
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Transform into:</label>
-                        <select id="remix-type" class="w-full p-3 rounded-lg border-2 border-gray-300 focus:border-purple-500 focus:outline-none text-gray-700">
-                            <option value="tweet">Twitter Thread</option>
-                            <option value="email">Professional Email</option>
-                            <option value="ad">Ad Copy</option>
-                            <option value="linkedin">LinkedIn Post</option>
-                            <option value="blog">SEO Blog Post</option>
-                        </select>
-                    </div>
-                    <button id="remix-btn" class="w-full mt-4 bg-purple-600 text-white font-bold py-3 rounded-lg hover:bg-purple-700 transition">Remix Now</button>
-                    <p class="text-sm text-red-600 mt-2">Note: Processing may take up to 2 minutes.</p>
-                </div>
-
-                <!-- Output Panel -->
-                <div class="p-6 bg-white">
-                    <h2 class="text-xl font-bold mb-4 text-gray-800">Remixed Content</h2>
-                    <div id="output-text" class="w-full h-64 p-4 bg-gray-50 rounded-lg border-2 border-gray-200 text-gray-700 overflow-auto"></div>
-                    <button id="copy-btn" class="w-full mt-4 bg-green-500 text-white font-bold py-2 rounded-lg hover:bg-green-600 hidden">Copy to Clipboard</button>
-                </div>
+            <!-- OUTPUT -->
+            <div class="bg-white/10 p-4 rounded-xl">
+                <h2 class="text-xl font-bold mb-2">🎉 Result</h2>
+                <div id="output-text" class="h-40 p-2 bg-gray-100 rounded text-black overflow-auto">Click Remix!</div>
+                <button id="copy-btn" class="w-full bg-green-600 p-2 rounded mt-2 hidden">Copy</button>
             </div>
         </div>
 
-        <!-- Login Modal -->
-        <div id="login-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 hidden">
-            <div class="bg-white rounded-xl p-6 max-w-md w-full shadow-lg">
-                <h2 class="text-2xl font-bold mb-4 text-gray-800">Log In</h2>
-                <form id="login-form" class="space-y-4">
-                    <input type="text" name="username" placeholder="Username" required class="w-full p-3 border-2 border-gray-300 rounded-lg focus:border-purple-500 focus:outline-none text-gray-700">
-                    <input type="password" name="password" placeholder="Password" required class="w-full p-3 border-2 border-gray-300 rounded-lg focus:border-purple-500 focus:outline-none text-gray-700">
-                    <div class="h-captcha" data-sitekey="{{ hcaptcha_site_key }}"></div>
-                    <button type="submit" class="w-full bg-purple-600 text-white font-bold py-2 rounded-lg hover:bg-purple-700">Log In</button>
-                    <button type="button" id="close-login-btn" class="w-full text-gray-600 py-2 hover:text-gray-800 mt-2">Cancel</button>
-                </form>
-                <p id="login-error" class="text-red-500 text-center mt-2 hidden"></p>
+        <!-- LOGIN MODAL -->
+        <div id="login-modal" class="fixed inset-0 bg-black/50 flex items-center justify-center hidden">
+            <div class="bg-white p-6 rounded m-4 max-w-sm w-full">
+                <h2 class="text-2xl mb-4">Log In</h2>
+                <input id="username" placeholder="Username" class="w-full p-2 border rounded mb-2">
+                <input id="password" type="password" placeholder="Password" class="w-full p-2 border rounded mb-2">
+                <button id="submit-login" class="w-full bg-purple-600 text-white p-2 rounded">Log In</button>
+                <p id="login-error" class="text-red-500 text-sm mt-2 hidden"></p>
+                <p class="text-sm mt-2">Use: <b>test / test</b> (case insensitive)</p>
             </div>
         </div>
-
-        <!-- Paywall Modal -->
-        <div id="paywall" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 hidden">
-            <div class="bg-white rounded-xl p-6 max-w-md w-full shadow-lg text-center">
-                <div class="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <span class="text-3xl text-white">✨</span>
-                </div>
-                <h2 class="text-2xl font-bold mb-2 text-gray-800">Upgrade to Unlimited</h2>
-                <p class="text-gray-600 mb-4">You’ve used all free remixes! Subscribe for unlimited access.</p>
-                <div id="paypal-button-container"></div>
-                <button id="close-paywall-btn" class="w-full text-gray-600 py-2 hover:text-gray-800 mt-4">Maybe Later</button>
-            </div>
-        </div>
-
-        <!-- Contact Section -->
-        <section class="mt-8 bg-white/10 backdrop-blur-sm rounded-xl p-6 text-white">
-            <h2 class="text-xl font-bold mb-4 text-center">Contact Us</h2>
-            <form id="contact-form" class="max-w-md mx-auto space-y-4">
-                <input type="text" name="name" placeholder="Your Name" required class="w-full p-3 border-2 border-gray-300 rounded-lg focus:border-white focus:outline-none text-gray-700 bg-white/80">
-                <input type="email" name="email" placeholder="Your Email" required class="w-full p-3 border-2 border-gray-300 rounded-lg focus:border-white focus:outline-none text-gray-700 bg-white/80">
-                <textarea name="message" placeholder="Your Message" required class="w-full h-24 p-3 border-2 border-gray-300 rounded-lg focus:border-white focus:outline-none text-gray-700 bg-white/80"></textarea>
-                <button type="submit" class="w-full bg-purple-600 text-white font-bold py-2 rounded-lg hover:bg-purple-700">Send</button>
-            </form>
-            <p id="contact-status" class="text-center mt-2 hidden"></p>
-        </section>
-
-        <!-- Footer -->
-        <footer class="text-center mt-8 text-white/70 text-sm">
-            <p>&copy; 2025 NextLogicAI</p>
-        </footer>
     </div>
+
+    <script>
+        let loggedIn = false;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const loginBtn = document.getElementById('login-btn');
+            if (loginBtn) {
+                loginBtn.onclick = () => {
+                    console.log('Login button clicked');
+                    document.getElementById('login-modal').style.display = 'flex';
+                    document.getElementById('login-error').classList.add('hidden');
+                    document.getElementById('username').value = '';
+                    document.getElementById('password').value = '';
+                };
+            } else {
+                console.error('Login button not found!');
+            }
+
+            fetch('/check_session')
+                .then(response => response.json())
+                .then(data => {
+                    loggedIn = data.logged_in;
+                    console.log('Session data:', data);
+                    updateUI();
+                })
+                .catch(error => console.error('Session check error:', error));
+
+            function updateUI() {
+                document.getElementById('login-btn').style.display = loggedIn ? 'none' : 'inline';
+                document.getElementById('logout-btn').style.display = loggedIn ? 'inline' : 'none';
+                document.getElementById('remix-btn').disabled = !loggedIn;
+                document.getElementById('remix-btn').textContent = loggedIn ? 'Remix!' : '🔐 Log In';
+                document.getElementById('uses-counter').textContent = loggedIn ? '3 FREE!' : 'Log In';
+            }
+
+            document.getElementById('submit-login').onclick = () => {
+                const username = document.getElementById('username').value.trim();
+                const password = document.getElementById('password').value.trim();
+                const errorMsg = document.getElementById('login-error');
+                
+                const formData = new FormData();
+                formData.append('username', username);
+                formData.append('password', password);
+                console.log('Sending login:', { username, password });
+
+                fetch('/login', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => {
+                    if (!response.ok) throw new Error('Login failed');
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.message) {
+                        loggedIn = true;
+                        document.getElementById('login-modal').style.display = 'none';
+                        updateUI();
+                        alert('Logged In! 🎉');
+                    } else {
+                        errorMsg.textContent = data.error || 'Login failed';
+                        errorMsg.classList.remove('hidden');
+                    }
+                })
+                .catch(error => {
+                    console.error('Login error:', error);
+                    errorMsg.textContent = 'Network error or invalid credentials';
+                    errorMsg.classList.remove('hidden');
+                });
+            };
+
+            document.getElementById('logout-btn').onclick = () => {
+                fetch('/logout')
+                    .then(() => {
+                        loggedIn = false;
+                        updateUI();
+                    })
+                    .catch(error => console.error('Logout error:', error));
+            };
+
+            document.getElementById('remix-btn').onclick = () => {
+                const text = document.getElementById('input-text').value;
+                if (!text) return alert('Type something!');
+                document.getElementById('remix-btn').textContent = '⏳...';
+                fetch('/remix', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({prompt: text, 'remix-type': document.getElementById('remix-type').value})
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Remix response:', data);
+                    document.getElementById('output-text').textContent = data.output || data.error || 'Error!';
+                    document.getElementById('copy-btn').style.display = 'block';
+                })
+                .catch(error => {
+                    console.error('Remix error:', error);
+                    document.getElementById('output-text').textContent = 'Error: ' + error.message;
+                })
+                .finally(() => document.getElementById('remix-btn').textContent = 'Remix!');
+            };
+
+            document.getElementById('copy-btn').onclick = () => {
+                navigator.clipboard.writeText(document.getElementById('output-text').textContent)
+                    .then(() => {
+                        const btn = document.getElementById('copy-btn');
+                        btn.textContent = '✅ Copied!';
+                        setTimeout(() => btn.textContent = 'Copy', 1000);
+                    })
+                    .catch(error => alert('Copy failed: ' + error));
+            };
+        });
+    </script>
 </body>
 </html>

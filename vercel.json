@@ -1,6 +1,25 @@
 {
+  "version": 2,
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/static/(.*)",
+      "dest": "/static/$1"
+    }
+  ],
   "rewrites": [
-    { "source": "/(login|register)", "destination": "/$1" },
-    { "source": "/static/:path*", "destination": "/static/:path*" }
+    {
+      "source": "/api/(.*)",
+      "destination": "https://your-render-backend-url.com/$1"
+    }
   ]
 }
