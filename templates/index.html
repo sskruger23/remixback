@@ -1,22 +1,26 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NextLogicAI</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://www.paypal.com/sdk/js?client-id=AZGW3y8tnDTpa4IQZWmD_W73F6nx-8fpjl-WJDR2U4mGtVxrDGOvJhZZCngG-yIMUPUsLXpozO3F-OuB&vault=true&intent=subscription"></script>
+    <script src="https://www.paypal.com/sdk/js?client-id=AZGW3y8tnDTpa4IQZWmD_W73F6nx-8fpjl-WJDR2U4mGtVxrDGOvJhZZCngG-yIMUPUsLXpozO3F-OuB&vault=true&intent=subscription" defer></script>
 </head>
 <body class="bg-gradient-to-br from-purple-600 to-pink-500 min-h-screen text-white p-4">
     <div class="max-w-4xl mx-auto">
-        <!-- HEADER -->
-        <div class="text-center mb-8">
+        <!-- Header -->
+        <header class="text-center mb-8">
             <h1 class="text-4xl font-bold">✨ NextLogicAI</h1>
             <p id="uses-counter" class="bg-white/20 p-2 rounded-full mt-2">Checking...</p>
             <button id="login-btn" class="bg-white/20 px-4 py-2 rounded-full mt-2">Log In</button>
             <button id="logout-btn" class="bg-white/20 px-4 py-2 rounded-full mt-2 hidden">Log Out</button>
-        </div>
+            <div id="paypal-button-container" class="mt-4"></div>
+        </header>
 
+        <!-- Main Content -->
         <div class="grid md:grid-cols-2 gap-4">
-            <!-- INPUT -->
+            <!-- Input Section -->
             <div class="bg-white/10 p-4 rounded-xl">
                 <h2 class="text-xl font-bold mb-2">📝 Your Text</h2>
                 <textarea id="input-text" class="w-full h-40 p-2 rounded text-black" placeholder="Type anything..."></textarea>
@@ -28,7 +32,7 @@
                 <button id="remix-btn" class="w-full bg-purple-600 p-3 rounded mt-2" disabled>🔐 Log In</button>
             </div>
 
-            <!-- OUTPUT -->
+            <!-- Output Section -->
             <div class="bg-white/10 p-4 rounded-xl">
                 <h2 class="text-xl font-bold mb-2">🎉 Result</h2>
                 <div id="output-text" class="h-40 p-2 bg-gray-100 rounded text-black overflow-auto">Click Remix!</div>
@@ -36,7 +40,18 @@
             </div>
         </div>
 
-        <!-- LOGIN MODAL -->
+        <!-- Contact Form -->
+        <div class="mt-8 bg-white/10 p-4 rounded-xl">
+            <h2 class="text-xl font-bold mb-2">📧 Contact Us</h2>
+            <form id="contact-form" class="space-y-4">
+                <input type="text" name="name" placeholder="Your Name" class="w-full p-2 border rounded text-black" required>
+                <input type="email" name="email" placeholder="Your Email" class="w-full p-2 border rounded text-black" required>
+                <textarea name="message" placeholder="Your Message" class="w-full h-20 p-2 border rounded text-black" required></textarea>
+                <button type="submit" class="w-full bg-purple-600 p-2 rounded text-white">Send</button>
+            </form>
+        </div>
+
+        <!-- Login Modal -->
         <div id="login-modal" class="fixed inset-0 bg-black/50 flex items-center justify-center hidden">
             <div class="bg-white p-6 rounded m-4 max-w-sm w-full">
                 <h2 class="text-2xl mb-4">Log In</h2>
@@ -48,118 +63,22 @@
             </div>
         </div>
     </div>
-
+    <script src="/static/script.js" defer></script>
     <script>
-        let loggedIn = false;
-
-        document.addEventListener('DOMContentLoaded', () => {
-            const loginBtn = document.getElementById('login-btn');
-            if (loginBtn) {
-                loginBtn.onclick = () => {
-                    console.log('Login button clicked');
-                    document.getElementById('login-modal').style.display = 'flex';
-                    document.getElementById('login-error').classList.add('hidden');
-                    document.getElementById('username').value = '';
-                    document.getElementById('password').value = '';
-                };
-            } else {
-                console.error('Login button not found!');
-            }
-
-            fetch('/check_session')
-                .then(response => response.json())
-                .then(data => {
-                    loggedIn = data.logged_in;
-                    console.log('Session data:', data);
-                    updateUI();
-                })
-                .catch(error => console.error('Session check error:', error));
-
-            function updateUI() {
-                document.getElementById('login-btn').style.display = loggedIn ? 'none' : 'inline';
-                document.getElementById('logout-btn').style.display = loggedIn ? 'inline' : 'none';
-                document.getElementById('remix-btn').disabled = !loggedIn;
-                document.getElementById('remix-btn').textContent = loggedIn ? 'Remix!' : '🔐 Log In';
-                document.getElementById('uses-counter').textContent = loggedIn ? '3 FREE!' : 'Log In';
-            }
-
-            document.getElementById('submit-login').onclick = () => {
-                const username = document.getElementById('username').value.trim();
-                const password = document.getElementById('password').value.trim();
-                const errorMsg = document.getElementById('login-error');
-                
-                const formData = new FormData();
-                formData.append('username', username);
-                formData.append('password', password);
-                console.log('Sending login:', { username, password });
-
-                fetch('/login', {
-                    method: 'POST',
-                    body: formData
-                })
-                .then(response => {
-                    if (!response.ok) throw new Error('Login failed');
-                    return response.json();
-                })
-                .then(data => {
-                    if (data.message) {
-                        loggedIn = true;
-                        document.getElementById('login-modal').style.display = 'none';
-                        updateUI();
-                        alert('Logged In! 🎉');
-                    } else {
-                        errorMsg.textContent = data.error || 'Login failed';
-                        errorMsg.classList.remove('hidden');
-                    }
-                })
-                .catch(error => {
-                    console.error('Login error:', error);
-                    errorMsg.textContent = 'Network error or invalid credentials';
-                    errorMsg.classList.remove('hidden');
+        // PayPal button initialization
+        paypal.Buttons({
+            createSubscription: function(data, actions) {
+                return actions.subscription.create({
+                    'plan_id': '{{ paypal_plan }}'
                 });
-            };
-
-            document.getElementById('logout-btn').onclick = () => {
-                fetch('/logout')
-                    .then(() => {
-                        loggedIn = false;
-                        updateUI();
-                    })
-                    .catch(error => console.error('Logout error:', error));
-            };
-
-            document.getElementById('remix-btn').onclick = () => {
-                const text = document.getElementById('input-text').value;
-                if (!text) return alert('Type something!');
-                document.getElementById('remix-btn').textContent = '⏳...';
-                fetch('/remix', {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({prompt: text, 'remix-type': document.getElementById('remix-type').value})
-                })
-                .then(response => response.json())
-                .then(data => {
-                    console.log('Remix response:', data);
-                    document.getElementById('output-text').textContent = data.output || data.error || 'Error!';
-                    document.getElementById('copy-btn').style.display = 'block';
-                })
-                .catch(error => {
-                    console.error('Remix error:', error);
-                    document.getElementById('output-text').textContent = 'Error: ' + error.message;
-                })
-                .finally(() => document.getElementById('remix-btn').textContent = 'Remix!');
-            };
-
-            document.getElementById('copy-btn').onclick = () => {
-                navigator.clipboard.writeText(document.getElementById('output-text').textContent)
-                    .then(() => {
-                        const btn = document.getElementById('copy-btn');
-                        btn.textContent = '✅ Copied!';
-                        setTimeout(() => btn.textContent = 'Copy', 1000);
-                    })
-                    .catch(error => alert('Copy failed: ' + error));
-            };
-        });
+            },
+            onApprove: function(data, actions) {
+                fetch('/update_subscription', { method: 'POST' })
+                    .then(response => response.json())
+                    .then(data => alert(data.message || 'Upgrade failed'))
+                    .catch(error => alert('Error upgrading: ' + error));
+            }
+        }).render('#paypal-button-container');
     </script>
 </body>
 </html>
